@@ -8,10 +8,12 @@ HEIGHT = 600
 pygame.init()
 fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Breakout')
+pygame.display.set_caption('Bruch')
 
 # Game Folder
 game_folder = os.path.dirname(__file__)
+
+# Hintergrund = pygame.image.load(game_folder + '/images\Galaxy.jpg')
 
 DARKBLUE = (0, 0, 0.2)
 
@@ -36,23 +38,27 @@ ballRect.topleft = (bx, by)
 brick = None
 bricks = []
 
+# class BrickNormal(Brick):
 
-def createBricks(pathToImg, rows, cols):
+# class BrickPowerUp(Brick):
+
+BrickNormal = pygame.image.load(game_folder + '/images/brick.png')
+BrickPowerUp = pygame.image.load(game_folder + '/images/brickPowerUp.png')
+
+def createBricks(pathToImg, cols, rows):
     global brick
-
     brick = pygame.image.load(pathToImg)
-
     for y in range(rows):
         brickY = (y * 24) + 100
         for x in range(cols):
             brickX = (x * 31) + 50
-            width = brick.get_width()
-            height = brick.get_height()
-            rect = pygame.Rect(brickX, brickY, width, height)
+            RectWidth = brick.get_width()
+            RectHeight = brick.get_height()
+            rect = pygame.Rect(brickX, brickY, RectWidth, RectHeight)
             bricks.append(rect)
 
-
-createBricks(game_folder + '/images/brick.png', 5, 10)
+createBricks(game_folder + '/images/brickPowerUp.png', 10, 5)
+print(bricks, "Shalom")
 
 running = True
 
@@ -128,5 +134,8 @@ while running:
 
     pygame.display.update()
     dt = fpsClock.tick(60)
+
+if len(bricks) == 0:
+    running = False
 
 pygame.quit()
