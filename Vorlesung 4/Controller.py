@@ -1,6 +1,8 @@
 #!/usr/bin/python
 import pygame
 import os
+from abc import ABC, abstractmethod
+import random
 
 WIDTH = 400
 HEIGHT = 600
@@ -38,35 +40,58 @@ ballRect.topleft = (bx, by)
 brick = None
 bricks = []
 
-# class BrickNormal(Brick):
+# class Objekt(ABC):
+#     @abstractmethod
+#     def use(self):
+#         pass
 
-# class BrickPowerUp(Brick):
+class BrickNormal:
+    BrickNormal = pygame.image.load(game_folder + '/images/brick.png')
+    Chance = 95
+    # def __init__(self, img):
+    #     self.img = img
 
-BrickNormal = pygame.image.load(game_folder + '/images/brick.png')
-BrickPowerUp = pygame.image.load(game_folder + '/images/brickPowerUp.png')
+class BrickPowerUp:
+    BrickPowerUp = pygame.image.load(game_folder + '/images/brickPowerUp.png')
+    Chance = 5
 
-def createBricks(pathToImg, cols, rows):
-    global brick
-    brick = pygame.image.load(pathToImg)
+def BrickFactory(rows):
     for y in range(rows):
-        brickY = (y * 24) + 100
-        for x in range(cols):
-            brickX = (x * 31) + 50
-            RectWidth = brick.get_width()
-            RectHeight = brick.get_height()
-            rect = pygame.Rect(brickX, brickY, RectWidth, RectHeight)
+
+        if random.randint(0,95) <= BrickNormal.Chance:
+            global brick
+            brick = pygame.image.load(game_folder + '/images/brick.png')
+            width = brick.get_width()
+            height = brick.get_height()
+            print(f"{height} {width} {brick}")
+            rect = pygame.Rect(width, height)
+
             bricks.append(rect)
 
-createBricks(game_folder + '/images/brickPowerUp.png', 10, 5)
-print(bricks, "Shalom")
+
+# def createBricks(cols, rows):
+#     global brick
+#     brick = pygame.image.load(game_folder + '/images/brickPowerUp.png')
+#     for y in range(rows):
+#         brickY = (y * 24) + 100
+#         for x in range(cols):
+#             brickX = (x * 31) + 50
+#             RectWidth = brick.get_width()
+#             RectHeight = brick.get_height()
+#             rect = pygame.Rect(brickX, brickY, RectWidth, RectHeight)
+#             bricks.append(rect)
+
+# createBricks(10, 5)
+BrickFactory(5)
+print(bricks)
 
 running = True
 
 while running:
     screen.fill(DARKBLUE)
     # brick draw
-    for b in bricks:
-        screen.blit(brick, b)
+    # for b in bricks:
+    #     screen.blit(brick, b)
 
     # bat and ball draw
     screen.blit(bat, batRect)
